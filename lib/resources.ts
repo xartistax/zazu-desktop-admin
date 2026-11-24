@@ -34,14 +34,14 @@ export type Resource = {
   fields: Field[]
 }
 
+// Fokus vorerst auf die Schweiz: ESCO und Deutschland wurden entfernt
+// (Migration 20261124190000_remove_esco_and_de.sql).
 const sources: Option[] = [
   { value: "ch_isco_19", label: "CH-ISCO-19" },
-  { value: "esco", label: "ESCO" },
 ]
 
 const countries: Option[] = [
   { value: "CH", label: "Schweiz" },
-  { value: "DE", label: "Deutschland" },
 ]
 
 // Prüfstatus importierter Einträge, siehe Prüfliste (/pruefliste)
@@ -82,7 +82,7 @@ export const resources: Resource[] = [
       { name: "name_de", label: "Name", type: "text", required: true },
       { name: "code", label: "Code", type: "text", required: true, help: "Eindeutiges Kürzel, z. B. A16." },
       { name: "internal_group", label: "Gruppe", type: "text" },
-      { name: "countries", label: "Länder", type: "tags", defaultValue: ["CH"], help: "Länderkürzel, mit Komma getrennt, z. B. CH, DE." },
+      { name: "countries", label: "Länder", type: "tags", defaultValue: ["CH"], help: "Länderkürzel, mit Komma getrennt. Aktuell nur CH." },
       { name: "sort_order", label: "Reihenfolge", type: "number", required: true, help: "Kleinere Zahlen erscheinen in der App weiter oben." },
     ],
   },
@@ -166,7 +166,7 @@ export const resources: Resource[] = [
     fields: [
       { name: "name_de", label: "Name", type: "text", required: true },
       { name: "typical_education_type", label: "Typische Ausbildung", type: "text" },
-      { name: "countries", label: "Länder", type: "tags", defaultValue: ["CH"], help: "Länderkürzel, mit Komma getrennt, z. B. CH, DE." },
+      { name: "countries", label: "Länder", type: "tags", defaultValue: ["CH"], help: "Länderkürzel, mit Komma getrennt. Aktuell nur CH." },
       { name: "note", label: "Hinweis", type: "text" },
       { name: "sort_order", label: "Reihenfolge", type: "number", required: true, defaultValue: 0 },
     ],
@@ -239,7 +239,7 @@ export const resources: Resource[] = [
     group: "Berufe",
     label: "Berufskategorien",
     singular: "Berufskategorie",
-    description: "Hierarchie der Berufsgruppen (CH-ISCO-19 / ESCO).",
+    description: "Hierarchie der Berufsgruppen nach CH-ISCO-19.",
     primaryKey: ["id"],
     labelColumn: "name_de",
     searchColumns: ["name_de", "code"],
@@ -345,7 +345,6 @@ export const resources: Resource[] = [
       { name: "origin", label: "Herkunft", type: "text" },
       { name: "proficiency_levels", label: "Niveaustufen", type: "text" },
       { name: "skill_code", label: "Skill-Code", type: "text" },
-      { name: "esco_uri", label: "ESCO-Link", type: "url" },
     ],
   },
 ]
