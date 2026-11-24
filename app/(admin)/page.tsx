@@ -7,6 +7,13 @@ import {
 } from "@/components/ui/card"
 import { requireAdmin } from "@/lib/auth"
 import { resourceGroups, resources } from "@/lib/resources"
+import type { AdminUser } from "@/lib/users"
+
+const userCountCards = [
+  { label: "Alle Benutzer", filter: null, description: "Alle Konten der App." },
+  { label: "Kandidaten", filter: "candidate", description: "Personen auf Stellensuche." },
+  { label: "Arbeitgeber", filter: "employer", description: "Konten von Firmen." },
+]
 
 export default async function DashboardPage() {
   const { supabase } = await requireAdmin()
@@ -21,15 +28,48 @@ export default async function DashboardPage() {
   )
   const countBySlug = Object.fromEntries(counts)
 
+  const userCounts = await Promise.all(
+    userCountCards.map(async (card) => {
+      const { data } = await supabase.rpc("admin_list_users", {
+        p_filter: card.filter,
+        p_limit: 1,
+      })
+      return (data as AdminUser[] | null)?.[0]?.total_count ?? 0
+    })
+  )
+
   return (
     <div className="grid gap-8">
       <div>
         <h1 className="text-2xl font-semibold">Übersicht</h1>
         <p className="text-sm text-muted-foreground">
-          Hier pflegst du die Auswahllisten, die Kandidaten in der ZAZU-App sehen.
-          Änderungen sind sofort in der App sichtbar.
+          Hier verwaltest du die Konten der ZAZU-App und pflegst die Auswahllisten,
+          die Kandidaten sehen. Änderungen sind sofort in der App sichtbar.
         </p>
       </div>
+      <section className="grid gap-3">
+        <h2 className="text-lg font-medium">Konten</h2>
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {userCountCards.map((card, index) => (
+            <Link
+              key={card.label}
+              href={card.filter ? `/benutzer?filter=${card.filter}` : "/benutzer"}
+            >
+              <Card className="h-full transition-colors hover:bg-muted/50">
+                <CardHeader>
+                  <CardTitle className="flex items-baseline justify-between gap-2">
+                    {card.label}
+                    <span className="text-sm font-normal text-muted-foreground tabular-nums">
+                      {userCounts[index].toLocaleString("de-CH")}
+                    </span>
+                  </CardTitle>
+                  <CardDescription>{card.description}</CardDescription>
+                </CardHeader>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </section>
       {resourceGroups.map((group) => (
         <section key={group} className="grid gap-3">
           <h2 className="text-lg font-medium">{group}</h2>

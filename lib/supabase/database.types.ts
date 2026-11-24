@@ -14,6 +14,21 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_users: {
+        Row: {
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       candidate_custom_skills: {
         Row: {
           candidate_id: string
@@ -1719,6 +1734,38 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_delete_user: { Args: { p_user_id: string }; Returns: undefined }
+      admin_list_users: {
+        Args: {
+          p_filter?: string
+          p_limit?: number
+          p_offset?: number
+          p_search?: string
+          p_user_id?: string
+        }
+        Returns: {
+          account_role: string
+          banned_until: string
+          created_at: string
+          email: string
+          email_confirmed_at: string
+          first_name: string
+          id: string
+          is_admin: boolean
+          last_name: string
+          last_sign_in_at: string
+          phone_number: string
+          total_count: number
+        }[]
+      }
+      admin_set_user_admin: {
+        Args: { p_admin: boolean; p_user_id: string }
+        Returns: undefined
+      }
+      admin_set_user_banned: {
+        Args: { p_banned: boolean; p_user_id: string }
+        Returns: undefined
+      }
       create_employer_company: {
         Args: {
           p_address_city?: string
@@ -1899,6 +1946,7 @@ export type Database = {
           work_radius_km: number
         }[]
       }
+      is_admin: { Args: never; Returns: boolean }
       is_own_company_job: { Args: { p_job_id: string }; Returns: boolean }
       reset_employer_for_poc: { Args: never; Returns: undefined }
       reset_my_candidate_onboarding: { Args: never; Returns: undefined }
