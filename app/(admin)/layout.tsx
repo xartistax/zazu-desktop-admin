@@ -8,6 +8,7 @@ import { signOut } from "../login/actions"
 
 const groups = [
   { title: "Konten", items: [{ slug: "benutzer", label: "Benutzer" }] },
+  { title: "Qualität", items: [{ slug: "pruefliste", label: "Prüfliste" }] },
   ...resourceGroups.map((title) => ({
     title,
     items: resources

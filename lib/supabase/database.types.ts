@@ -510,10 +510,13 @@ export type Database = {
           field_kind: string | null
           id: string
           name_de: string
+          note: string | null
           parent_id: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
           source_name: string | null
           source_url: string | null
-          validation_status: string | null
+          validation_status: string
         }
         Insert: {
           code: string
@@ -522,10 +525,13 @@ export type Database = {
           field_kind?: string | null
           id?: string
           name_de: string
+          note?: string | null
           parent_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           source_name?: string | null
           source_url?: string | null
-          validation_status?: string | null
+          validation_status?: string
         }
         Update: {
           code?: string
@@ -534,10 +540,13 @@ export type Database = {
           field_kind?: string | null
           id?: string
           name_de?: string
+          note?: string | null
           parent_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           source_name?: string | null
           source_url?: string | null
-          validation_status?: string | null
+          validation_status?: string
         }
         Relationships: [
           {
@@ -586,6 +595,8 @@ export type Database = {
           id: string
           institution_type_id: string
           name: string
+          reviewed_at: string | null
+          reviewed_by: string | null
           source_url: string | null
           validation_status: string
         }
@@ -595,6 +606,8 @@ export type Database = {
           id?: string
           institution_type_id: string
           name: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           source_url?: string | null
           validation_status?: string
         }
@@ -604,6 +617,8 @@ export type Database = {
           id?: string
           institution_type_id?: string
           name?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           source_url?: string | null
           validation_status?: string
         }

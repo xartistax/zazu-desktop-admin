@@ -42,6 +42,7 @@ Neuen Admin anlegen:
 - `lib/resources.ts` – alle pflegbaren Tabellen mit Feldern und Beschriftungen; neue Bereiche hier ergänzen
 - `lib/actions.ts` – Server Actions (Speichern, Löschen, Suche für Auswahlfelder)
 - `app/(admin)/benutzer`, `lib/users.ts`, `lib/user-actions.ts` – Benutzerverwaltung (eigene Seiten, nicht über `resources.ts`)
+- `app/(admin)/pruefliste`, `lib/review.ts`, `lib/review-actions.ts` – Prüfliste für importierte Fachrichtungen und Institutionen; Prüfvermerk (wer/wann) setzt der DB-Trigger aus `20261124160000_add_catalog_review.sql`
 - `app/(admin)/[resource]` – generische Listen-, Neu- und Bearbeiten-Seiten
 - `proxy.ts` – Session-Refresh und Weiterleitung zum Login
 - `lib/supabase/database.types.ts` – generiert mit `supabase gen types typescript --linked`

@@ -44,9 +44,24 @@ const countries: Option[] = [
   { value: "DE", label: "Deutschland" },
 ]
 
-const validationStatus: Option[] = [
+// Prüfstatus importierter Einträge, siehe Prüfliste (/pruefliste)
+export const validationStatus: Option[] = [
   { value: "review_required", label: "Prüfung nötig" },
   { value: "verified", label: "Geprüft" },
+]
+
+const fieldValidationStatus: Option[] = [
+  ...validationStatus,
+  { value: "reference_category", label: "Referenzkategorie (keine Prüfung)" },
+]
+
+export const fieldKinds: Option[] = [
+  { value: "apprenticeship", label: "Lehrberuf" },
+  { value: "study_area", label: "Studienbereich" },
+  { value: "study_field", label: "Studienrichtung" },
+  { value: "specialization", label: "Spezialisierung" },
+  { value: "training_context", label: "Ausbildungskontext" },
+  { value: "search_alias", label: "Suchbegriff" },
 ]
 
 export const resources: Resource[] = [
@@ -108,21 +123,15 @@ export const resources: Resource[] = [
         name: "field_kind",
         label: "Art",
         type: "select",
-        options: [
-          { value: "apprenticeship", label: "Lehrberuf" },
-          { value: "study_area", label: "Studienbereich" },
-          { value: "study_field", label: "Studienrichtung" },
-          { value: "specialization", label: "Spezialisierung" },
-          { value: "training_context", label: "Ausbildungskontext" },
-          { value: "search_alias", label: "Suchbegriff" },
-        ],
+        options: fieldKinds,
       },
       { name: "parent_id", label: "Übergeordnet", type: "reference", resource: "fachrichtungen", help: "Optional, z. B. der Studienbereich einer Studienrichtung." },
       { name: "code", label: "Code", type: "text", required: true, help: "Eindeutiger technischer Schlüssel." },
       { name: "country_code", label: "Land", type: "select", options: countries },
-      { name: "validation_status", label: "Status", type: "select", options: validationStatus, defaultValue: "review_required" },
+      { name: "validation_status", label: "Status", type: "select", options: fieldValidationStatus, defaultValue: "review_required", required: true },
       { name: "source_name", label: "Quelle", type: "text" },
       { name: "source_url", label: "Quell-Link", type: "url" },
+      { name: "note", label: "Notiz", type: "textarea", help: "Interne Anmerkung, z. B. aus dem Import. Wird in der App nicht angezeigt." },
     ],
   },
   {

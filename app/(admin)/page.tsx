@@ -6,7 +6,8 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { requireAdmin } from "@/lib/auth"
-import { resourceGroups, resources } from "@/lib/resources"
+import { getResource, resourceGroups, resources } from "@/lib/resources"
+import { reviewCatalogs } from "@/lib/review"
 import type { AdminUser } from "@/lib/users"
 
 const userCountCards = [
@@ -38,6 +39,16 @@ export default async function DashboardPage() {
     })
   )
 
+  const openReviews = await Promise.all(
+    reviewCatalogs.map(async (catalog) => {
+      const { count } = await supabase
+        .from(getResource(catalog.slug)!.table)
+        .select("id", { count: "exact", head: true })
+        .eq("validation_status", "review_required")
+      return count ?? 0
+    })
+  )
+
   return (
     <div className="grid gap-8">
       <div>
@@ -47,6 +58,37 @@ export default async function DashboardPage() {
           die Kandidaten sehen. Änderungen sind sofort in der App sichtbar.
         </p>
       </div>
+      <section className="grid gap-3">
+        <h2 className="text-lg font-medium">Prüfung</h2>
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {reviewCatalogs.map((catalog, index) => (
+            <Link
+              key={catalog.slug}
+              href={
+                catalog.slug === "fachrichtungen"
+                  ? "/pruefliste"
+                  : `/pruefliste?katalog=${catalog.slug}`
+              }
+            >
+              <Card className="h-full transition-colors hover:bg-muted/50">
+                <CardHeader>
+                  <CardTitle className="flex items-baseline justify-between gap-2">
+                    {catalog.label}
+                    <span className="text-sm font-normal text-muted-foreground tabular-nums">
+                      {openReviews[index].toLocaleString("de-CH")} offen
+                    </span>
+                  </CardTitle>
+                  <CardDescription>
+                    {openReviews[index] === 0
+                      ? "Alle importierten Einträge sind geprüft."
+                      : "Importierte Einträge, die noch kontrolliert werden müssen."}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </section>
       <section className="grid gap-3">
         <h2 className="text-lg font-medium">Konten</h2>
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">

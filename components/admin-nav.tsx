@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   BriefcaseIcon,
+  ClipboardCheckIcon,
   GraduationCapIcon,
   LayoutDashboardIcon,
   SparklesIcon,
@@ -19,6 +20,7 @@ export type NavGroup = {
 
 const groupIcons: Record<string, LucideIcon> = {
   Konten: UsersIcon,
+  Qualität: ClipboardCheckIcon,
   Ausbildung: GraduationCapIcon,
   Berufe: BriefcaseIcon,
   Skills: SparklesIcon,
